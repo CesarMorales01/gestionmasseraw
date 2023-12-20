@@ -30,7 +30,7 @@ class IngresosController extends Controller
         $date = now();
         $año = date_format($date, "y");
         $mes = date_format($date, "m");
-        $ffinal = $año . "-" . $mes . "-" . '31';
+        $ffinal = date("Y-m-t", strtotime($date));
         $finicial = $año . "-" . $mes . "-" . '01';
         $ventas=DB::table('lista_compras')->select(DB::raw('SUM(total_compra) AS suma'))->whereBetween('fecha', [$finicial, $ffinal])->get();
         $ventas=$ventas[0]->suma;

@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import GlobalFunctions from '../services/GlobalFunctions';
-import SecondaryButton from '@/Components/SecondaryButton';
 import PrimaryButton from '@/Components/PrimaryButton'
 
 const DialogoCompraN = (params) => {
@@ -28,7 +27,7 @@ const DialogoCompraN = (params) => {
     }, [idCompra])
 
     function fetchProductos() {
-        const enlace = params.url + 'shopping/shoppingproducts/' + cliente+'/'+compran
+        const enlace = params.url + 'shopping/shoppingproducts/' + cliente + '/' + compran
         fetch(enlace).then((response) => {
             return response.json()
         }).then((json) => {
@@ -66,6 +65,7 @@ const DialogoCompraN = (params) => {
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">Precio Unidad</th>
                                         <th scope="col">Subtotal</th>
+                                        <th scope="col">Imagen</th>
                                     </tr>
                                 </thead>
                                 <tbody >
@@ -81,11 +81,19 @@ const DialogoCompraN = (params) => {
                                     {lista.map((item, index) => {
                                         const subt = parseInt(item.precio * item.cantidad)
                                         return (
-                                            <tr scope="row" key={index}>
-                                                <th>{item.producto}</th>
+                                            <tr className='align-middle' key={index}>
+                                                <td >
+                                                    <a className='btn btn-link' href={route('product.edit', item.codigo)}>{item.producto}</a>
+                                                </td>
                                                 <td>{item.cantidad}</td>
                                                 <td>{glob.formatNumber(item.precio)}</td>
                                                 <td>{glob.formatNumber(subt)}</td>
+                                                <td >
+                                                    <div style={{ width: '6em', height: '4em' }}>
+                                                        <img alt='' className='rounded img-fluid' style={{ width: window.screen.width > 600 ? '70%' : '90%', height: 'auto' }} src={params.url + 'Images/Products/' + item.imagen}></img>
+                                                    </div>
+
+                                                </td>
                                             </tr>
                                         )
                                     })}

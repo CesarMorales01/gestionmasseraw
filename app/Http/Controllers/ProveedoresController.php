@@ -30,7 +30,7 @@ class ProveedoresController extends Controller
         $date = now();
         $año = date_format($date, "Y");
         $mes = date_format($date, "m");
-        $ffinal = $año . "-" . $mes . "-" . '31';
+        $ffinal = date("Y-m-t", strtotime($date));
         $finicial = $año . "-" . $mes . "-" . '01';
         $categorias=DB::table('categorias_proveedores')->get();
         $proveedores=DB::table('proveedores')->whereBetween('fecha', [$finicial, $ffinal])->leftJoin('categorias_proveedores', 'proveedores.categoria', '=', 'categorias_proveedores.id')

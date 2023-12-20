@@ -28,9 +28,8 @@ class GastosController extends Controller
         $date = now();
         $año = date_format($date, "y");
         $mes = date_format($date, "m");
-        $ffinal = $año . "-" . $mes . "-" . '31';
+        $ffinal = date("Y-m-t", strtotime($date));
         $finicial = $año . "-" . $mes . "-" . '01';
-    
         $getGastos=DB::table('gastos')->select(DB::raw('SUM(valor) AS suma'))->whereBetween('fecha', [$finicial, $ffinal])->get();
         $gastos=$getGastos[0]->suma;
         $listaGastos=DB::table('gastos')->whereBetween('fecha', [$finicial, $ffinal])->leftJoin('categorias_gastos', 'gastos.category_id', '=', 'categorias_gastos.id')

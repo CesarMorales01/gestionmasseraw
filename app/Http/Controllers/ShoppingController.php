@@ -44,10 +44,10 @@ class ShoppingController extends Controller
         $deptos = DB::table('departamentos')->get();
         $municipios = DB::table('municipios')->get();
         $getClientes  = $this->all_clientes();
-        $clientes=[];
-        foreach($getClientes as $c){
-            if($c->cedula!=''){
-                $clientes[]=$c;
+        $clientes = [];
+        foreach ($getClientes as $c) {
+            if ($c->cedula != '') {
+                $clientes[] = $c;
             }
         }
         $auth = Auth()->user();
@@ -69,7 +69,7 @@ class ShoppingController extends Controller
         }
         DB::table('lista_compras')->insert([
             'cliente' => $datos->cliente,
-           // 'comentario_cliente' => $datos->comentario_cliente,
+            // 'comentario_cliente' => $datos->comentario_cliente,
             'compra_n' => $compra_n,
             'fecha' => $datos->fecha,
             'total_compra' => $datos->total_compra,
@@ -244,10 +244,10 @@ class ShoppingController extends Controller
         $deptos = DB::table('departamentos')->get();
         $municipios = DB::table('municipios')->get();
         $getClientes = $this->all_clientes();
-        $clientes=[];
-        foreach($getClientes as $c){
-            if($c->cedula!=''){
-                $clientes[]=$c;
+        $clientes = [];
+        foreach ($getClientes as $c) {
+            if ($c->cedula != '') {
+                $clientes[] = $c;
             }
         }
         $auth = Auth()->user();
@@ -262,7 +262,7 @@ class ShoppingController extends Controller
         if ($datosCompra->cliente != '') {
             $cliente = DB::table('clientes')->where('cedula', '=', $datosCompra->cliente)->first();
             $datosCompra->cliente = $cliente;
-        } 
+        }
         return Inertia::render('Shopping/NewShopping', compact('auth', 'clientes', 'globalVars', 'deptos', 'municipios', 'productos', 'token', 'datosCompra'));
     }
 
@@ -291,6 +291,18 @@ class ShoppingController extends Controller
     public function getProductosComprados($ced, $compra)
     {
         $compras = DB::table('lista_productos_comprados')->where('cliente', '=', $ced)->where('compra_n', '=', $compra)->get();
+        foreach ($compras as $compra) {
+            $imagenes = DB::table('imagenes_productos')->where('fk_producto', '=', $compra->codigo)->first();
+            if ($imagenes == null) {
+                $getProd = DB::table('productos')->where('id', '=', $compra->codigo)->first();
+                if ($getProd->imagen != '') {
+                    $token = strtok($getProd->imagen, "||");
+                    $compra->imagen = $token;
+                }
+            } else {
+                $compra->imagen = $imagenes->nombre_imagen;
+            }
+        }
         return response()->json($compras, 200, []);
     }
 

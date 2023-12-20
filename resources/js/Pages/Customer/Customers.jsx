@@ -38,29 +38,30 @@ const Clientes = (params) => {
     function cambioNombre(e) {
         const buscar = e.target.value.toLowerCase()
         let newArray = []
+        
         for (let i = 0; i < clientes.length; i++) {
-            let resultado=null;
+            let resultado='';
             if(clientes[i].nombre!=null){
                 if (clientes[i].nombre.toLowerCase().includes(buscar)) {
                     resultado=clientes[i]
                 }
             }
-            if(clientes[i].direccion!=null){
+            if(clientes[i].direccion!=null && resultado==''){
                 if(clientes[i].direccion.toLowerCase().includes(buscar)){
                     resultado=clientes[i]
                 }
             }
-            if(clientes[i].apellidos!=null){
+            if(clientes[i].apellidos!=null && resultado==''){
                 if(clientes[i].apellidos.toLowerCase().includes(buscar)){
                     resultado=clientes[i]
                 }
             }
-            if(clientes[i].email!=null){
+            if(clientes[i].email!=null && resultado==''){
                 if(clientes[i].email.toLowerCase().includes(buscar)){
                     resultado=clientes[i]
                 }
             }
-            if(resultado!=null){
+            if(resultado!=''){
                 newArray.push(resultado)
             }
         }
@@ -134,7 +135,7 @@ const Clientes = (params) => {
             </div>
             <h1 style={{ marginTop: '0.5em', fontSize: '1.5em' }} id="titulo" className="text-center">Lista de clientes</h1>
             <div className="container">
-                <TablaClientes noClientes={noClientes} clientes={filterClients}></TablaClientes>
+                <TablaClientes pagination={params.clientes.links} noClientes={noClientes} clientes={filterClients}></TablaClientes>
             </div>
         </AuthenticatedLayout>
     )

@@ -31,7 +31,7 @@ class InformesController extends Controller
         $año = date_format($date, "y");
         $mes = date_format($date, "m");
         $dia = date_format($date, "d");
-        $ffinal = $año . "-" . $mes . "-" . $dia;
+        $ffinal = date("Y-m-t", strtotime($date));
         $finicial = $año . "-" . $mes . "-" . $dia;
         $ingresos = app(IngresosController::class)->listByDate($finicial, $ffinal, '');
         $totalIngresos = intval($ingresos->original->ventas) + intval($ingresos->original->ingresos);
